@@ -58,7 +58,16 @@
       {%- include 'simple/elements/corrections.html' -%}
     {%- endif -%}
 
-    <div id="urls" role="main">
+    <div id="main_results" role="main">
+    {%- if results %}
+    <p class="sr-only" aria-live="polite" aria-atomic="true">
+      {%- if results | count == 1 -%}
+        {{ _('1 result found') }}
+      {%- else -%}
+        {{ _('%(num)s results found', num=results | count) }}
+      {%- endif -%}
+    </p>
+    {%- endif %}
     {% for result in results %}
         {% if result.open_group and not only_template %}<div class="template_group_{{ result['template']|replace('.html', '') }}">{% endif %}
         {% set index = loop.index %}

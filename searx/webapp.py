@@ -95,6 +95,8 @@ from searx.preferences import (
 )
 import searx.answerers
 import searx.plugins
+from searx.kagi_ranking import rank_results as atomic_rank_results, score_result as atomic_score_result
+from searx.performance import deduplicate_results as atomic_deduplicate
 
 
 from searx.metrics import get_engines_stats, get_engine_errors, get_reliabilities, histogram, counter, openmetrics
@@ -691,6 +693,15 @@ def search():
     previous_result = None
 
     results = result_container.get_ordered_results()
+
+    # ── Atomic Search: Phase 2 — ranking & deduplication ──────────────────
+    if output_format == 'html':
+        try:
+            results = atomic_deduplicate(results)
+            results = atomic_rank_results(results, search_query.query)
+        except Exception as _atomic_err:  # pylint: disable=broad-except
+            logger.warning('atomic ranking error: %s', _atomic_err)
+    # ──────────────────────────────────────────────────────────────────────
 
     if search_query.redirect_to_first_result and results:
         return redirect(results[0]['url'], 302)

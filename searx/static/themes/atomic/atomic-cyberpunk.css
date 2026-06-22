@@ -1,0 +1,271 @@
+/*
+ * Atomic Search — Cyberpunk Theme
+ * Neon accents on deep dark backgrounds with glitch-inspired details.
+ * SPDX-License-Identifier: AGPL-3.0-or-later
+ */
+
+:root {
+  --bg:              #0a0a0f;
+  --bg-surface:      #111118;
+  --bg-raised:       #16161f;
+  --border:          #2a2a3a;
+  --border-glow:     rgba(0, 255, 200, 0.25);
+
+  --neon-cyan:       #00ffc8;
+  --neon-pink:       #ff2d78;
+  --neon-yellow:     #f5e642;
+  --neon-purple:     #bf5fff;
+
+  --accent:          var(--neon-cyan);
+  --accent-alt:      var(--neon-pink);
+
+  --text-primary:    #e0e0f0;
+  --text-secondary:  #9090b0;
+  --text-muted:      #505070;
+  --text-on-accent:  #000000;
+
+  --glow-cyan:       0 0 8px rgba(0, 255, 200, 0.6), 0 0 20px rgba(0, 255, 200, 0.25);
+  --glow-pink:       0 0 8px rgba(255, 45, 120, 0.6), 0 0 20px rgba(255, 45, 120, 0.25);
+
+  --radius-sm:       4px;
+  --radius-md:       6px;
+  --radius-lg:       8px;
+
+  --font-mono:       'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
+}
+
+/* ── Base ─────────────────────────────────────────────────────────────── */
+
+body {
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: 'Inter', system-ui, sans-serif;
+  min-height: 100vh;
+}
+
+/* ── Scanline overlay (decorative) ───────────────────────────────────── */
+
+body::before {
+  content: '';
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 255, 200, 0.015) 2px,
+    rgba(0, 255, 200, 0.015) 4px
+  );
+  inset: 0;
+  pointer-events: none;
+  position: fixed;
+  z-index: 9999;
+}
+
+/* ── Result cards ─────────────────────────────────────────────────────── */
+
+.result,
+#sidebar,
+#answers,
+.infobox,
+nav#pagination {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.result {
+  padding: 1rem 1.25rem;
+  margin-bottom: 0.75rem;
+  position: relative;
+}
+
+.result::before {
+  content: '';
+  background: var(--neon-cyan);
+  border-radius: 2px;
+  bottom: 0;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 3px;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.result:hover {
+  border-color: var(--neon-cyan);
+  box-shadow: var(--glow-cyan);
+}
+
+.result:hover::before { opacity: 1; }
+
+/* ── Search bar ───────────────────────────────────────────────────────── */
+
+#search_form,
+#search {
+  background: var(--bg-raised);
+  border: 1px solid var(--neon-cyan);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--glow-cyan);
+  padding: 0.5rem 1rem;
+}
+
+#q {
+  background: transparent;
+  border: none;
+  color: var(--neon-cyan);
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  outline: none;
+  width: 100%;
+}
+
+#q::placeholder { color: var(--text-muted); }
+
+#search_submit,
+button[type="submit"] {
+  background: var(--neon-cyan);
+  border: none;
+  border-radius: var(--radius-sm);
+  color: var(--text-on-accent);
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  padding: 0.5rem 1.25rem;
+  text-transform: uppercase;
+  transition: box-shadow 0.2s;
+}
+
+#search_submit:hover,
+button[type="submit"]:hover {
+  box-shadow: var(--glow-cyan);
+}
+
+/* ── Typography ───────────────────────────────────────────────────────── */
+
+.result h3 a {
+  color: var(--neon-cyan);
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: none;
+  text-shadow: 0 0 6px rgba(0, 255, 200, 0.4);
+}
+
+.result h3 a:hover {
+  color: #ffffff;
+  text-shadow: var(--glow-cyan);
+}
+
+.result .url_wrapper {
+  color: var(--neon-pink);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  margin-bottom: 0.3rem;
+  opacity: 0.8;
+}
+
+.result .content { color: var(--text-secondary); font-size: 0.88rem; line-height: 1.6; }
+
+.result .highlight {
+  background: rgba(0, 255, 200, 0.12);
+  border-radius: 2px;
+  color: var(--neon-cyan);
+  padding: 0 2px;
+}
+
+/* ── Atomic ranking badges ────────────────────────────────────────────── */
+
+.atomic-badges { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: 0.5rem; }
+
+.atomic-badge {
+  border-radius: var(--radius-sm);
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  padding: 0.18rem 0.6rem;
+  text-transform: uppercase;
+}
+
+.atomic-badge-trusted  { background: rgba(0,255,200,0.1);  border: 1px solid var(--neon-cyan);   color: var(--neon-cyan); }
+.atomic-badge-fresh    { background: rgba(245,230,66,0.1);  border: 1px solid var(--neon-yellow); color: var(--neon-yellow); }
+.atomic-badge-relevant { background: rgba(191,95,255,0.1);  border: 1px solid var(--neon-purple); color: var(--neon-purple); }
+.atomic-badge-indepth  { background: rgba(255,45,120,0.1);  border: 1px solid var(--neon-pink);   color: var(--neon-pink); }
+
+.atomic-content-type {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  padding: 0.15rem 0.55rem;
+  text-transform: uppercase;
+}
+
+.atomic-reading-time { color: var(--text-muted); font-family: var(--font-mono); font-size: 0.72rem; }
+
+/* ── Sidebar ──────────────────────────────────────────────────────────── */
+
+#sidebar { padding: 1rem; }
+
+.suggestion {
+  background: var(--bg-raised);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--neon-cyan);
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  padding: 0.3rem 0.8rem;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.suggestion:hover { border-color: var(--neon-cyan); box-shadow: var(--glow-cyan); }
+
+/* ── Pagination ───────────────────────────────────────────────────────── */
+
+nav#pagination button,
+nav#pagination input[type="submit"] {
+  background: var(--bg-raised);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--neon-cyan);
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  padding: 0.4rem 0.9rem;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+nav#pagination button:hover,
+nav#pagination input[type="submit"]:hover {
+  border-color: var(--neon-cyan);
+  box-shadow: var(--glow-cyan);
+}
+
+nav#pagination .page_number_current {
+  background: var(--neon-cyan);
+  border-color: var(--neon-cyan);
+  color: var(--text-on-accent);
+}
+
+/* ── Focus ring ───────────────────────────────────────────────────────── */
+
+:focus-visible {
+  outline: 2px solid var(--neon-cyan);
+  outline-offset: 2px;
+  box-shadow: var(--glow-cyan);
+}
+
+.sr-only {
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  height: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
