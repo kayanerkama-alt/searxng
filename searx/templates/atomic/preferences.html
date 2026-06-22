@@ -1,0 +1,94 @@
+{% extends "atomic/base.html" %}
+
+{% block title %}Preferences - Atomic Search{% endblock %}
+
+{% block content %}
+<div class="preferences-container">
+  <h1 style="margin-bottom: 2rem;">⚙️ Preferences</h1>
+  
+  <form method="post" action="{{ url_for('preferences') }}">
+    
+    <!-- Theme Selection -->
+    <div class="preference-group">
+      <label for="theme">Theme</label>
+      <select name="theme" id="theme">
+        <option value="atomic" selected>Atomic (Modern)</option>
+        <option value="atomic-dark">Atomic Dark</option>
+        <option value="atomic-minimal">Atomic Minimal</option>
+        <option value="atomic-compact">Atomic Compact</option>
+      </select>
+    </div>
+
+    <!-- Language -->
+    <div class="preference-group">
+      <label for="language">Language</label>
+      <select name="language" id="language">
+        <option value="">Auto-detect</option>
+        {% for lang_code, lang_name in sxng_locales %}
+        <option value="{{ lang_code }}">{{ lang_name }}</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <!-- Results Per Page -->
+    <div class="preference-group">
+      <label for="results_on_new_tab">Results per page</label>
+      <select name="results_on_new_tab" id="results_on_new_tab">
+        <option value="10">10</option>
+        <option value="20" selected>20</option>
+        <option value="50">50</option>
+        <option value="100">100</option>
+      </select>
+    </div>
+
+    <!-- Privacy Settings -->
+    <div class="preference-group">
+      <label>
+        <input type="checkbox" name="image_proxy" checked>
+        Proxy images (enhanced privacy)
+      </label>
+    </div>
+
+    <div class="preference-group">
+      <label>
+        <input type="checkbox" name="safesearch" checked>
+        Safe search
+      </label>
+    </div>
+
+    <!-- Search Method -->
+    <div class="preference-group">
+      <label for="method">Search method</label>
+      <select name="method" id="method">
+        <option value="POST" selected>POST (more private)</option>
+        <option value="GET">GET</option>
+      </select>
+    </div>
+
+    <!-- Autocomplete -->
+    <div class="preference-group">
+      <label for="autocomplete">Autocomplete</label>
+      <select name="autocomplete" id="autocomplete">
+        <option value="">Disabled</option>
+        <option value="google">Google</option>
+        <option value="duckduckgo">DuckDuckGo</option>
+        <option value="wikipedia">Wikipedia</option>
+      </select>
+    </div>
+
+    <button type="submit" class="search-button" style="width: 100%; margin-top: 2rem;">Save Preferences</button>
+  </form>
+
+  <div style="margin-top: 2rem; padding: 1rem; background: var(--bg); border-radius: 8px; border: 1px solid var(--border);">
+    <h3 style="margin-bottom: 1rem;">🔒 Privacy Information</h3>
+    <ul style="margin-left: 1.5rem; color: var(--text-secondary);">
+      <li>Your searches are never stored or tracked</li>
+      <li>No cookies are set for tracking purposes</li>
+      <li>All connections use HTTPS encryption</li>
+      <li>Image proxy prevents referrer leaks</li>
+      <li>POST method hides queries from logs</li>
+    </ul>
+  </div>
+</div>
+{% endblock %}
+

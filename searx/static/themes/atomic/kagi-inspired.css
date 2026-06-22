@@ -1,0 +1,106 @@
+/* Atomic Search - Kagi-Inspired Theme Variant */
+/* SPDX-License-Identifier: AGPL-3.0-or-later */
+
+:root {
+  --primary: #ff6b35;
+  --primary-dark: #e55a2b;
+  --primary-light: #ff8555;
+  --bg: #ffffff;
+  --bg-secondary: #f5f5f5;
+  --text: #1a1a1a;
+  --text-secondary: #666666;
+  --border: #e0e0e0;
+  --success: #10b981;
+  --warning: #f59e0b;
+  --error: #ef4444;
+  --shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --primary: #ff8555;
+    --primary-dark: #ff6b35;
+    --primary-light: #ffaa88;
+    --bg: #0f0f0f;
+    --bg-secondary: #1a1a1a;
+    --text: #f0f0f0;
+    --text-secondary: #b0b0b0;
+    --border: #333333;
+  }
+}
+
+/* Import base styles */
+@import url('style.css');
+
+/* Kagi-inspired overrides */
+.logo {
+  color: var(--primary);
+  font-weight: 700;
+  letter-spacing: -1px;
+}
+
+.search-input {
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  padding: 12px 16px;
+  font-size: 16px;
+  background: var(--bg);
+}
+
+.search-input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px rgba(255, 107, 53, 0.1);
+}
+
+.search-button {
+  background: var(--primary);
+  border-radius: 12px;
+  padding: 12px 24px;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.search-button:hover {
+  background: var(--primary-dark);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.result {
+  border-left: 4px solid var(--primary);
+  border-radius: 8px;
+  padding: 1.25rem;
+}
+
+.result:hover {
+  border-left-color: var(--primary-dark);
+  box-shadow: var(--shadow-lg);
+}
+
+.result-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.result-title a {
+  color: var(--primary);
+}
+
+.result-title a:hover {
+  color: var(--primary-dark);
+}
+
+.category-btn {
+  border-radius: 8px;
+  border: 2px solid var(--border);
+  padding: 0.5rem 1rem;
+}
+
+.category-btn:hover,
+.category-btn.active {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: white;
+}
+

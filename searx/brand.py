@@ -1,9 +1,9 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""Implementations needed for a branding of SearXNG."""
+"""Implementations needed for a branding of Atomic Search."""
 # pylint: disable=too-few-public-methods
 
 # Struct fields aren't discovered in Python 3.14
-# - https://github.com/searxng/searxng/issues/5284
+# - https://github.com/atomic-search/atomic-search/issues/5284
 from __future__ import annotations
 
 __all__ = ["SettingsBrand"]
@@ -35,27 +35,27 @@ class SettingsBrand(msgspec.Struct, kw_only=True, forbid_unknown_fields=True):
     .. code:: yaml
 
        brand:
-         issue_url: https://github.com/searxng/searxng/issues
-         docs_url: https://docs.searxng.org
+         issue_url: https://github.com/atomic-search/atomic-search/issues
+         docs_url: https://docs.atomic-search.org
          public_instances: https://searx.space
-         wiki_url: https://github.com/searxng/searxng/wiki
+         wiki_url: https://github.com/atomic-search/atomic-search/wiki
 
          custom:
            links:
-             Uptime: https://uptime.searxng.org/history/example-org
+             Uptime: https://uptime.atomic-search.org/history/example-org
              About: https://example.org/user/about.html
     """
 
-    issue_url: str = "https://github.com/searxng/searxng/issues"
+    issue_url: str = "https://github.com/atomic-search/atomic-search/issues"
     """If you host your own issue tracker change this URL."""
 
-    docs_url: str = "https://docs.searxng.org"
+    docs_url: str = "https://docs.atomic-search.org"
     """If you host your own documentation change this URL."""
 
     public_instances: str = "https://searx.space"
     """If you host your own https://searx.space change this URL."""
 
-    wiki_url: str = "https://github.com/searxng/searxng/wiki"
+    wiki_url: str = "https://github.com/atomic-search/atomic-search/wiki"
     """Link to your wiki (or ``false``)"""
 
     custom: BrandCustom = msgspec.field(default_factory=BrandCustom)
@@ -72,7 +72,7 @@ class SettingsBrand(msgspec.Struct, kw_only=True, forbid_unknown_fields=True):
     # long as we don't have a more general solution, we should support it in the
     # given function, but it should not be expanded further.
 
-    new_issue_url: str = "https://github.com/searxng/searxng/issues/new"
+    new_issue_url: str = "https://github.com/atomic-search/atomic-search/issues/new"
     """If you host your own issue tracker not on GitHub, then unset this URL.
 
     Note: This URL will create a pre-filled GitHub bug report form for an

@@ -1,0 +1,36 @@
+{% extends "atomic/base.html" %}
+
+{% block title %}Atomic Search - Privacy-First Metasearch{% endblock %}
+
+{% block content %}
+<div class="search-container" style="margin-top: 8rem;">
+  <div style="text-align: center; margin-bottom: 3rem;">
+    <h1 style="font-size: 3rem; margin-bottom: 0.5rem; color: var(--primary);">⚛ Atomic Search</h1>
+    <p style="font-size: 1.2rem; color: var(--text-secondary); margin-bottom: 2rem;">
+      Fast • Private • Open Source
+    </p>
+  </div>
+
+  <form method="post" action="{{ url_for('search') }}" class="search-form" style="max-width: 600px; margin: 0 auto;">
+    <input type="text" name="q" class="search-input" placeholder="Search the web privately..." autofocus required>
+    <button type="submit" class="search-button">Search</button>
+  </form>
+
+  {% if categories %}
+  <div class="categories" style="justify-content: center;">
+    {% for category in categories %}
+    <button type="button" class="category-btn" onclick="document.querySelector('input[name=q]').focus();">
+      {{ category }}
+    </button>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <div style="text-align: center; margin-top: 3rem; color: var(--text-secondary); font-size: 0.9rem;">
+    <p>🔒 Your searches are never tracked or profiled</p>
+    <p>⚡ Lightning-fast results from multiple sources</p>
+    <p>🔓 100% open source and privacy-respecting</p>
+  </div>
+</div>
+{% endblock %}
+

@@ -1408,3 +1408,14 @@ init()
 
 if __name__ == "__main__":
     run()
+
+# Privacy and Performance Enhancements
+from searx.privacy_hardening import apply_privacy_headers, get_privacy_headers
+from searx.performance_optimization import measure_performance, get_optimization_config
+from searx.atomic_features import get_all_features
+
+@app.after_request
+def apply_privacy_and_security(response):
+    """Apply privacy and security headers to all responses"""
+    apply_privacy_headers(response)
+    return response

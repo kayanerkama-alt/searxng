@@ -1,0 +1,67 @@
+{% extends "atomic/base.html" %}
+
+{% block title %}{{ q }} - Atomic Search{% endblock %}
+
+{% block content %}
+<div class="search-container">
+  <form method="post" action="{{ url_for('search') }}" class="search-form">
+    <input type="text" name="q" class="search-input" value="{{ q }}" placeholder="Search..." required>
+    <button type="submit" class="search-button">Search</button>
+  </form>
+
+  {% if categories %}
+  <div class="categories">
+    {% for category in categories %}
+    <button type="button" class="category-btn">{{ category }}</button>
+    {% endfor %}
+  </div>
+  {% endif %}
+</div>
+
+<div class="results-container">
+  {% if results %}
+    {% for result in results %}
+    <article class="result">
+      <h2 class="result-title">
+        <a href="{{ result.url }}" rel="noopener noreferrer">{{ result.title }}</a>
+      </h2>
+      <div class="result-url">{{ result.url }}</div>
+      {% if result.content %}
+      <p class="result-snippet">{{ result.content }}</p>
+      {% endif %}
+      {% if result.engines %}
+      <div class="result-meta">
+        <span>📊 Sources: {{ result.engines|join(', ') }}</span>
+      </div>
+      {% endif %}
+    </article>
+    {% endfor %}
+
+    {% if pages %}
+    <div class="pagination">
+      {% if pages.previous %}
+      <a href="{{ pages.previous }}">← Previous</a>
+      {% endif %}
+      
+      {% for page in pages.pages %}
+        {% if page.current %}
+        <span class="current">{{ page.number }}</span>
+        {% else %}
+        <a href="{{ page.url }}">{{ page.number }}</a>
+        {% endif %}
+      {% endfor %}
+      
+      {% if pages.next %}
+      <a href="{{ pages.next }}">Next →</a>
+      {% endif %}
+    </div>
+    {% endif %}
+  {% else %}
+    <div style="text-align: center; padding: 3rem 1rem;">
+      <p style="font-size: 1.1rem; color: var(--text-secondary);">No results found for "{{ q }}"</p>
+      <p style="margin-top: 1rem; color: var(--text-secondary);">Try different keywords or check your spelling</p>
+    </div>
+  {% endif %}
+</div>
+{% endblock %}
+
