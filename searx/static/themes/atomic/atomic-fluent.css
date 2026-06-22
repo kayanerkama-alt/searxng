@@ -1,0 +1,284 @@
+/*
+ * Atomic Search — Fluent Design Theme
+ * Microsoft Fluent Design System: acrylic, reveal highlight,
+ * depth, motion, and material.
+ * SPDX-License-Identifier: AGPL-3.0-or-later
+ */
+
+:root {
+  /* Fluent colour palette */
+  --fluent-accent:         #0078d4;
+  --fluent-accent-dark1:   #106ebe;
+  --fluent-accent-dark2:   #005a9e;
+  --fluent-accent-light1:  #2b88d8;
+  --fluent-accent-light2:  #c7e0f4;
+
+  --fluent-bg:             #f3f2f1;
+  --fluent-bg-overlay:     rgba(255, 255, 255, 0.7);
+  --fluent-surface:        #ffffff;
+  --fluent-surface-alt:    #faf9f8;
+  --fluent-border:         #edebe9;
+  --fluent-border-strong:  #8a8886;
+
+  --fluent-text:           #323130;
+  --fluent-text-secondary: #605e5c;
+  --fluent-text-disabled:  #a19f9d;
+  --fluent-text-on-accent: #ffffff;
+
+  --fluent-shadow-4:  0 1.6px 3.6px rgba(0,0,0,0.132), 0 0.3px 0.9px rgba(0,0,0,0.108);
+  --fluent-shadow-8:  0 3.2px 7.2px rgba(0,0,0,0.132), 0 0.6px 1.8px rgba(0,0,0,0.108);
+  --fluent-shadow-16: 0 6.4px 14.4px rgba(0,0,0,0.132), 0 1.2px 3.6px rgba(0,0,0,0.108);
+
+  --fluent-acrylic: rgba(243, 242, 241, 0.85);
+  --fluent-blur:    blur(20px) saturate(180%);
+
+  --radius-sm:  2px;
+  --radius-md:  4px;
+  --radius-lg:  8px;
+}
+
+/* ── Base ─────────────────────────────────────────────────────────────── */
+
+body {
+  background: var(--fluent-bg);
+  color: var(--fluent-text);
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  min-height: 100vh;
+}
+
+/* ── Acrylic surface mixin ────────────────────────────────────────────── */
+
+.result,
+#sidebar,
+#answers,
+.infobox,
+nav#pagination {
+  background: var(--fluent-acrylic);
+  backdrop-filter: var(--fluent-blur);
+  -webkit-backdrop-filter: var(--fluent-blur);
+  border: 1px solid var(--fluent-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--fluent-shadow-4);
+  transition: box-shadow 0.15s ease;
+}
+
+.result:hover { box-shadow: var(--fluent-shadow-8); }
+
+/* ── Search bar ───────────────────────────────────────────────────────── */
+
+#search_form,
+#search {
+  background: var(--fluent-surface);
+  border: 1px solid var(--fluent-border-strong);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--fluent-shadow-4);
+  display: flex;
+  align-items: center;
+  padding: 0.45rem 1rem;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+#search_form:focus-within,
+#search:focus-within {
+  border-color: var(--fluent-accent);
+  box-shadow: var(--fluent-shadow-8), 0 0 0 1px var(--fluent-accent);
+}
+
+#q {
+  background: transparent;
+  border: none;
+  color: var(--fluent-text);
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  font-size: 1rem;
+  outline: none;
+  width: 100%;
+}
+
+#q::placeholder { color: var(--fluent-text-disabled); }
+
+#search_submit,
+button[type="submit"] {
+  background: var(--fluent-accent);
+  border: none;
+  border-radius: var(--radius-sm);
+  color: var(--fluent-text-on-accent);
+  cursor: pointer;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  font-size: 0.875rem;
+  font-weight: 600;
+  padding: 0.45rem 1.1rem;
+  transition: background 0.1s;
+}
+
+#search_submit:hover,
+button[type="submit"]:hover { background: var(--fluent-accent-dark1); }
+
+#search_submit:active,
+button[type="submit"]:active { background: var(--fluent-accent-dark2); }
+
+/* ── Result cards ─────────────────────────────────────────────────────── */
+
+.result {
+  margin-bottom: 0.75rem;
+  padding: 1rem 1.25rem;
+}
+
+/* Reveal highlight effect on hover */
+.result::after {
+  content: '';
+  border-radius: inherit;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+  transition: opacity 0.15s;
+  background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(0,120,212,0.08) 0%, transparent 60%);
+}
+
+.result { position: relative; }
+.result:hover::after { opacity: 1; }
+
+.result .url_wrapper {
+  color: #107c10;
+  font-size: 0.78rem;
+  margin-bottom: 0.2rem;
+}
+
+.result h3 {
+  font-size: 1.05rem;
+  font-weight: 400;
+  margin: 0.1rem 0 0.3rem;
+}
+
+.result h3 a {
+  color: var(--fluent-accent);
+  text-decoration: none;
+}
+
+.result h3 a:hover { text-decoration: underline; color: var(--fluent-accent-dark1); }
+
+.result .content {
+  color: var(--fluent-text-secondary);
+  font-size: 0.875rem;
+  line-height: 1.58;
+}
+
+.result .highlight {
+  background: var(--fluent-accent-light2);
+  border-radius: 2px;
+  color: var(--fluent-accent-dark2);
+  padding: 0 2px;
+}
+
+/* ── Atomic ranking badges ────────────────────────────────────────────── */
+
+.atomic-badges { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: 0.5rem; }
+
+.atomic-badge {
+  border-radius: var(--radius-sm);
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 0.18rem 0.6rem;
+}
+
+.atomic-badge-trusted  { background: #dff6dd; color: #107c10; }
+.atomic-badge-fresh    { background: var(--fluent-accent-light2); color: var(--fluent-accent-dark2); }
+.atomic-badge-relevant { background: #f4f4fd; color: #5c2d91; border: 1px solid #c8c6f7; }
+.atomic-badge-indepth  { background: #fff4ce; color: #835b00; }
+
+.atomic-content-type {
+  background: var(--fluent-surface-alt);
+  border: 1px solid var(--fluent-border);
+  border-radius: var(--radius-sm);
+  color: var(--fluent-text-secondary);
+  font-size: 0.68rem;
+  font-weight: 600;
+  padding: 0.15rem 0.55rem;
+}
+
+.atomic-reading-time { color: var(--fluent-text-disabled); font-size: 0.75rem; }
+
+/* ── Sidebar ──────────────────────────────────────────────────────────── */
+
+#sidebar { padding: 1rem; }
+
+.suggestion {
+  background: var(--fluent-surface);
+  border: 1px solid var(--fluent-border);
+  border-radius: var(--radius-lg);
+  color: var(--fluent-accent);
+  cursor: pointer;
+  font-size: 0.85rem;
+  padding: 0.28rem 0.8rem;
+  transition: background 0.1s, border-color 0.1s;
+}
+
+.suggestion:hover {
+  background: var(--fluent-accent-light2);
+  border-color: var(--fluent-accent);
+}
+
+/* ── Pagination ───────────────────────────────────────────────────────── */
+
+nav#pagination button,
+nav#pagination input[type="submit"] {
+  background: var(--fluent-surface);
+  border: 1px solid var(--fluent-border);
+  border-radius: var(--radius-sm);
+  color: var(--fluent-accent);
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 600;
+  padding: 0.4rem 0.9rem;
+  transition: background 0.1s, border-color 0.1s;
+}
+
+nav#pagination button:hover,
+nav#pagination input[type="submit"]:hover {
+  background: var(--fluent-accent-light2);
+  border-color: var(--fluent-accent);
+}
+
+nav#pagination .page_number_current {
+  background: var(--fluent-accent);
+  border-color: var(--fluent-accent);
+  color: var(--fluent-text-on-accent);
+}
+
+/* ── Focus ring ───────────────────────────────────────────────────────── */
+
+:focus-visible {
+  outline: 2px solid var(--fluent-accent);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+.sr-only {
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  height: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+
+/* ── Dark mode ────────────────────────────────────────────────────────── */
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --fluent-bg:             #201f1e;
+    --fluent-bg-overlay:     rgba(32, 31, 30, 0.85);
+    --fluent-surface:        #292827;
+    --fluent-surface-alt:    #323130;
+    --fluent-border:         #3b3a39;
+    --fluent-border-strong:  #605e5c;
+    --fluent-text:           #f3f2f1;
+    --fluent-text-secondary: #c8c6c4;
+    --fluent-text-disabled:  #797775;
+    --fluent-acrylic:        rgba(32, 31, 30, 0.85);
+    --fluent-accent-light2:  #004578;
+  }
+}

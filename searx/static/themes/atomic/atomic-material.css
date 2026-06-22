@@ -1,0 +1,256 @@
+/*
+ * Atomic Search — Material Design Theme
+ * Implements Material Design 3 (Material You) principles:
+ * tonal surfaces, dynamic colour, and expressive typography.
+ * SPDX-License-Identifier: AGPL-3.0-or-later
+ */
+
+:root {
+  /* MD3 colour tokens */
+  --md-primary:           #6750a4;
+  --md-on-primary:        #ffffff;
+  --md-primary-container: #eaddff;
+  --md-on-primary-cont:   #21005d;
+
+  --md-secondary:         #625b71;
+  --md-secondary-cont:    #e8def8;
+
+  --md-surface:           #fffbfe;
+  --md-surface-variant:   #e7e0ec;
+  --md-on-surface:        #1c1b1f;
+  --md-on-surface-var:    #49454f;
+
+  --md-outline:           #79747e;
+  --md-outline-variant:   #cac4d0;
+
+  --md-error:             #b3261e;
+  --md-error-container:   #f9dedc;
+
+  --md-elevation-1: 0 1px 2px rgba(0,0,0,0.3), 0 1px 3px 1px rgba(0,0,0,0.15);
+  --md-elevation-2: 0 1px 2px rgba(0,0,0,0.3), 0 2px 6px 2px rgba(0,0,0,0.15);
+  --md-elevation-3: 0 4px 8px 3px rgba(0,0,0,0.15), 0 1px 3px rgba(0,0,0,0.3);
+
+  --radius-xs:  4px;
+  --radius-sm:  8px;
+  --radius-md:  12px;
+  --radius-lg:  16px;
+  --radius-xl:  28px;
+}
+
+/* ── Base ─────────────────────────────────────────────────────────────── */
+
+body {
+  background: var(--md-surface);
+  color: var(--md-on-surface);
+  font-family: 'Roboto', 'Google Sans', system-ui, sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  min-height: 100vh;
+}
+
+/* ── Search bar (MD3 Search bar) ──────────────────────────────────────── */
+
+#search_form,
+#search {
+  background: var(--md-surface-variant);
+  border: none;
+  border-radius: var(--radius-xl);
+  box-shadow: var(--md-elevation-1);
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 1.25rem;
+  transition: box-shadow 0.2s;
+}
+
+#search_form:focus-within,
+#search:focus-within { box-shadow: var(--md-elevation-2); }
+
+#q {
+  background: transparent;
+  border: none;
+  color: var(--md-on-surface);
+  font-size: 1rem;
+  outline: none;
+  width: 100%;
+}
+
+#q::placeholder { color: var(--md-on-surface-var); }
+
+#search_submit,
+button[type="submit"] {
+  background: var(--md-primary);
+  border: none;
+  border-radius: var(--radius-sm);
+  color: var(--md-on-primary);
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  padding: 0.5rem 1.25rem;
+  transition: box-shadow 0.2s;
+}
+
+#search_submit:hover,
+button[type="submit"]:hover { box-shadow: var(--md-elevation-2); }
+
+/* ── Result cards (MD3 Cards) ─────────────────────────────────────────── */
+
+.result,
+#sidebar,
+#answers,
+.infobox,
+nav#pagination {
+  background: var(--md-surface);
+  border: 1px solid var(--md-outline-variant);
+  border-radius: var(--radius-md);
+  box-shadow: var(--md-elevation-1);
+  transition: box-shadow 0.2s;
+}
+
+.result {
+  margin-bottom: 0.75rem;
+  padding: 1rem 1.25rem;
+}
+
+.result:hover { box-shadow: var(--md-elevation-2); }
+
+.result .url_wrapper {
+  color: #386a20;
+  font-size: 0.78rem;
+  margin-bottom: 0.2rem;
+}
+
+.result h3 {
+  font-size: 1.05rem;
+  font-weight: 400;
+  margin: 0.1rem 0 0.3rem;
+}
+
+.result h3 a {
+  color: var(--md-primary);
+  text-decoration: none;
+}
+
+.result h3 a:hover { text-decoration: underline; }
+
+.result .content {
+  color: var(--md-on-surface-var);
+  font-size: 0.875rem;
+  line-height: 1.58;
+}
+
+.result .highlight {
+  background: var(--md-primary-container);
+  border-radius: 2px;
+  color: var(--md-on-primary-cont);
+  padding: 0 2px;
+}
+
+/* ── Atomic ranking badges (MD3 Chips) ────────────────────────────────── */
+
+.atomic-badges { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: 0.5rem; }
+
+.atomic-badge {
+  border-radius: var(--radius-sm);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  padding: 0.2rem 0.65rem;
+}
+
+.atomic-badge-trusted  { background: #c8e6c9; color: #1b5e20; }
+.atomic-badge-fresh    { background: #bbdefb; color: #0d47a1; }
+.atomic-badge-relevant { background: var(--md-primary-container); color: var(--md-on-primary-cont); }
+.atomic-badge-indepth  { background: #fff9c4; color: #f57f17; }
+
+.atomic-content-type {
+  background: var(--md-surface-variant);
+  border-radius: var(--radius-sm);
+  color: var(--md-on-surface-var);
+  font-size: 0.68rem;
+  font-weight: 500;
+  padding: 0.15rem 0.55rem;
+}
+
+.atomic-reading-time { color: var(--md-on-surface-var); font-size: 0.75rem; }
+
+/* ── Sidebar ──────────────────────────────────────────────────────────── */
+
+#sidebar { padding: 1rem; }
+
+.suggestion {
+  background: var(--md-surface-variant);
+  border: none;
+  border-radius: var(--radius-xl);
+  color: var(--md-primary);
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 500;
+  padding: 0.3rem 0.9rem;
+  transition: background 0.15s;
+}
+
+.suggestion:hover { background: var(--md-secondary-cont); }
+
+/* ── Pagination ───────────────────────────────────────────────────────── */
+
+nav#pagination button,
+nav#pagination input[type="submit"] {
+  background: var(--md-surface);
+  border: 1px solid var(--md-outline-variant);
+  border-radius: var(--radius-sm);
+  color: var(--md-primary);
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 500;
+  padding: 0.45rem 1rem;
+  transition: background 0.15s, box-shadow 0.15s;
+}
+
+nav#pagination button:hover,
+nav#pagination input[type="submit"]:hover {
+  background: var(--md-surface-variant);
+  box-shadow: var(--md-elevation-1);
+}
+
+nav#pagination .page_number_current {
+  background: var(--md-primary);
+  border-color: var(--md-primary);
+  color: var(--md-on-primary);
+  font-weight: 600;
+}
+
+/* ── Focus ring (MD3 state layer) ────────────────────────────────────── */
+
+:focus-visible {
+  outline: 3px solid var(--md-primary);
+  outline-offset: 2px;
+  border-radius: var(--radius-xs);
+}
+
+.sr-only {
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  height: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+
+/* ── Dark mode ────────────────────────────────────────────────────────── */
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --md-primary:           #d0bcff;
+    --md-on-primary:        #381e72;
+    --md-primary-container: #4f378b;
+    --md-on-primary-cont:   #eaddff;
+    --md-surface:           #1c1b1f;
+    --md-surface-variant:   #49454f;
+    --md-on-surface:        #e6e1e5;
+    --md-on-surface-var:    #cac4d0;
+    --md-outline:           #938f99;
+    --md-outline-variant:   #49454f;
+  }
+}

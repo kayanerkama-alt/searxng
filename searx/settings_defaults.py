@@ -245,6 +245,37 @@ SCHEMA: dict[str, t.Any] = {
         'hotkeys': SettingsValue(('default', 'vim'), 'default'),
         'url_formatting': SettingsValue(('pretty', 'full', 'host'), 'pretty'),
     },
+    # ── Atomic Search Phase 2: extended settings ───────────────────────────
+    'atomic': {
+        # Ranking preferences
+        'ranking': {
+            'enabled': SettingsValue(bool, True),
+            'deduplication': SettingsValue(bool, True),
+            'show_badges': SettingsValue(bool, True),
+            'show_reading_time': SettingsValue(bool, True),
+            'show_content_type': SettingsValue(bool, True),
+            'show_freshness': SettingsValue(bool, True),
+        },
+        # Accessibility options
+        'accessibility': {
+            'high_contrast': SettingsValue(bool, False),
+            'dyslexia_font': SettingsValue(bool, False),
+            'reduce_motion': SettingsValue(bool, False),
+            'large_text': SettingsValue(bool, False),
+            'focus_indicators': SettingsValue(bool, True),
+        },
+        # Performance options
+        'performance': {
+            'lazy_load_images': SettingsValue(bool, True),
+            'result_cache_ttl': SettingsValue(int, 120),
+        },
+        # Advanced search features
+        'search': {
+            'operator_parsing': SettingsValue(bool, True),
+            'shortcut_expansion': SettingsValue(bool, True),
+            'quick_actions': SettingsValue(bool, True),
+        },
+    },
     "preferences": SettingsPref,
     'outgoing': {
         'useragent_suffix': SettingsValue(str, ''),

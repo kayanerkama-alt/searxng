@@ -1,0 +1,216 @@
+/*
+ * Atomic Search — Minimal White Theme
+ * Ultra-clean, whitespace-first design inspired by Kagi's simplicity.
+ * SPDX-License-Identifier: AGPL-3.0-or-later
+ */
+
+:root {
+  --bg:              #ffffff;
+  --bg-surface:      #fafafa;
+  --border:          #e8e8e8;
+  --border-focus:    #1a73e8;
+
+  --accent:          #1a73e8;
+  --accent-hover:    #1557b0;
+  --accent-visited:  #6200ee;
+
+  --text-primary:    #202124;
+  --text-secondary:  #4d5156;
+  --text-muted:      #70757a;
+  --text-url:        #188038;
+
+  --radius-sm:       4px;
+  --radius-md:       8px;
+  --radius-lg:       24px;
+
+  --max-width:       680px;
+}
+
+/* ── Base ─────────────────────────────────────────────────────────────── */
+
+body {
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: 'Google Sans', 'Roboto', 'Arial', sans-serif;
+  font-size: 14px;
+  line-height: 1.58;
+  margin: 0;
+}
+
+/* ── Search bar ───────────────────────────────────────────────────────── */
+
+#search_form,
+#search {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 1px 6px rgba(32, 33, 36, 0.08);
+  display: flex;
+  align-items: center;
+  padding: 0.4rem 1rem;
+  transition: box-shadow 0.2s;
+}
+
+#search_form:focus-within,
+#search:focus-within {
+  box-shadow: 0 1px 6px rgba(32, 33, 36, 0.28);
+}
+
+#q {
+  background: transparent;
+  border: none;
+  color: var(--text-primary);
+  font-size: 1rem;
+  outline: none;
+  width: 100%;
+}
+
+#q::placeholder { color: var(--text-muted); }
+
+#search_submit,
+button[type="submit"] {
+  background: var(--accent);
+  border: none;
+  border-radius: var(--radius-sm);
+  color: #fff;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 500;
+  padding: 0.45rem 1rem;
+  transition: background 0.15s;
+}
+
+#search_submit:hover,
+button[type="submit"]:hover { background: var(--accent-hover); }
+
+/* ── Result cards ─────────────────────────────────────────────────────── */
+
+.result {
+  border: none;
+  border-bottom: 1px solid var(--border);
+  border-radius: 0;
+  margin-bottom: 0;
+  max-width: var(--max-width);
+  padding: 1rem 0;
+}
+
+.result:last-child { border-bottom: none; }
+
+.result .url_wrapper {
+  color: var(--text-url);
+  font-size: 0.8rem;
+  margin-bottom: 0.2rem;
+}
+
+.result h3 {
+  font-size: 1.1rem;
+  font-weight: 400;
+  margin: 0.1rem 0 0.3rem;
+}
+
+.result h3 a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.result h3 a:hover { text-decoration: underline; }
+.result h3 a:visited { color: var(--accent-visited); }
+
+.result .content {
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  line-height: 1.58;
+  margin: 0;
+}
+
+.result .highlight {
+  background: rgba(26, 115, 232, 0.08);
+  border-radius: 2px;
+  font-weight: 500;
+  padding: 0 1px;
+}
+
+/* ── Atomic ranking badges ────────────────────────────────────────────── */
+
+.atomic-badges { display: flex; flex-wrap: wrap; gap: 0.3rem; margin-top: 0.4rem; }
+
+.atomic-badge {
+  border-radius: 3px;
+  font-size: 0.68rem;
+  font-weight: 500;
+  padding: 0.1rem 0.5rem;
+}
+
+.atomic-badge-trusted  { background: #e6f4ea; color: #137333; }
+.atomic-badge-fresh    { background: #e8f0fe; color: #1a73e8; }
+.atomic-badge-relevant { background: #f3e8fd; color: #7b1fa2; }
+.atomic-badge-indepth  { background: #fef7e0; color: #b06000; }
+
+.atomic-content-type {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  color: var(--text-muted);
+  font-size: 0.68rem;
+  padding: 0.1rem 0.45rem;
+}
+
+.atomic-reading-time { color: var(--text-muted); font-size: 0.75rem; }
+
+/* ── Sidebar ──────────────────────────────────────────────────────────── */
+
+#sidebar { padding: 0.5rem 0; }
+
+.suggestion {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  color: var(--accent);
+  cursor: pointer;
+  font-size: 0.85rem;
+  padding: 0.25rem 0.75rem;
+  transition: background 0.1s;
+}
+
+.suggestion:hover { background: #e8f0fe; }
+
+/* ── Pagination ───────────────────────────────────────────────────────── */
+
+nav#pagination button,
+nav#pagination input[type="submit"] {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--accent);
+  cursor: pointer;
+  font-size: 0.875rem;
+  padding: 0.4rem 0.9rem;
+  transition: background 0.1s;
+}
+
+nav#pagination button:hover,
+nav#pagination input[type="submit"]:hover { background: var(--bg-surface); }
+
+nav#pagination .page_number_current {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+  font-weight: 600;
+}
+
+/* ── Focus ring ───────────────────────────────────────────────────────── */
+
+:focus-visible {
+  outline: 2px solid var(--border-focus);
+  outline-offset: 2px;
+}
+
+.sr-only {
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  height: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}

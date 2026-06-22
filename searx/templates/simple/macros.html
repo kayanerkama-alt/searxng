@@ -1,5 +1,41 @@
 {% from 'simple/icons.html' import icon_small %}
 
+{# ── Atomic Search: Kagi-style ranking metadata macros ─────────────────── #}
+
+{%- macro atomic_badges(result) -%}
+  {%- if result.atomic_badges -%}
+  <div class="atomic-badges" aria-label="Result quality indicators">
+    {%- for badge in result.atomic_badges -%}
+      {%- if badge == 'Trusted source' -%}
+        <span class="atomic-badge atomic-badge-trusted" title="Domain has high trust score">{{ badge }}</span>
+      {%- elif badge == 'Fresh content' -%}
+        <span class="atomic-badge atomic-badge-fresh" title="Recently published or updated">{{ badge }}</span>
+      {%- elif badge == 'Highly relevant' -%}
+        <span class="atomic-badge atomic-badge-relevant" title="Strong keyword match">{{ badge }}</span>
+      {%- elif badge == 'In-depth' -%}
+        <span class="atomic-badge atomic-badge-indepth" title="Detailed content">{{ badge }}</span>
+      {%- else -%}
+        <span class="atomic-badge">{{ badge }}</span>
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+  {%- endif -%}
+{%- endmacro -%}
+
+{%- macro atomic_meta(result) -%}
+  <div class="atomic-meta">
+    {%- if result.atomic_content_type and result.atomic_content_type != 'Article' -%}
+      <span class="atomic-content-type" aria-label="Content type: {{ result.atomic_content_type }}">{{ result.atomic_content_type }}</span>
+    {%- endif -%}
+    {%- if result.atomic_freshness_label -%}
+      <span class="atomic-reading-time" aria-label="Published: {{ result.atomic_freshness_label }}">{{ result.atomic_freshness_label }}</span>
+    {%- endif -%}
+    {%- if result.atomic_reading_time -%}
+      <span class="atomic-reading-time" aria-label="{{ result.atomic_reading_time }} minute read">~{{ result.atomic_reading_time }} min read</span>
+    {%- endif -%}
+  </div>
+{%- endmacro -%}
+
 <!-- Draw favicon -->
 {% macro draw_favicon(favicon) -%}
     <img width="14" height="14" class="favicon" src="{{ url_for('static', filename='themes/simple/img/icons/' + favicon + '.png') }}" alt="{{ favicon }}">
@@ -19,7 +55,10 @@
 
 <!-- Draw result header -->
 {% macro result_header(result, favicons, image_proxify) -%}
-<article class="result {% if result['template'] %}result-{{ result.template|replace('.html', '') }}{% else %}result-default{% endif %} {% if result['category'] %}category-{{ result['category'] }}{% endif %}">
+{%- set _trust = result.atomic_domain_trust | default('') -%}
+<article class="result {% if result['template'] %}result-{{ result.template|replace('.html', '') }}{% else %}result-default{% endif %} {% if result['category'] %}category-{{ result['category'] }}{% endif %}{% if _trust %} atomic-trust-{{ _trust }}{% endif %}"
+  {%- if result.atomic_badges is defined %} data-atomic-score="{{ result.atomic_score | default(0) }}"{% endif -%}
+>
   {{- result_open_link(result.url, "url_header") -}}
   {%- if favicon_resolver != "" %}
   <div class="favicon"><img loading="lazy" src="{{ favicon_url(result.parsed_url.netloc) }}"></div>
@@ -46,6 +85,8 @@
 
 <!-- Draw result sub footer -->
 {%- macro result_sub_footer(result) -%}
+{{- atomic_badges(result) -}}
+{{- atomic_meta(result) -}}
 <div class="engines">
   {% for engine in result.engines %}<span>{{ engine }}</span>{% endfor %}
   {{ icon_small('ellipsis-vertical') + result_link(cache_url + result.url, _('cached'), "cache_link") }}

@@ -1,0 +1,244 @@
+/*
+ * Atomic Search — Glassmorphism Theme
+ * Modern frosted-glass aesthetic with translucent surfaces,
+ * subtle blur effects, and vibrant accent colours.
+ * SPDX-License-Identifier: AGPL-3.0-or-later
+ */
+
+:root {
+  /* Palette */
+  --glass-bg:          rgba(255, 255, 255, 0.12);
+  --glass-bg-hover:    rgba(255, 255, 255, 0.20);
+  --glass-border:      rgba(255, 255, 255, 0.25);
+  --glass-shadow:      0 8px 32px rgba(31, 38, 135, 0.22);
+  --glass-blur:        blur(14px);
+
+  --accent:            #6c63ff;
+  --accent-light:      #a29bfe;
+  --accent-glow:       rgba(108, 99, 255, 0.35);
+
+  --text-primary:      #1a1a2e;
+  --text-secondary:    #4a4a6a;
+  --text-muted:        #7a7a9a;
+  --text-on-accent:    #ffffff;
+
+  --bg-gradient:       linear-gradient(135deg, #e0e7ff 0%, #f0e6ff 50%, #e6f0ff 100%);
+  --surface:           rgba(255, 255, 255, 0.55);
+  --surface-raised:    rgba(255, 255, 255, 0.75);
+
+  --radius-sm:         8px;
+  --radius-md:         14px;
+  --radius-lg:         20px;
+
+  --badge-trusted:     rgba(16, 185, 129, 0.18);
+  --badge-fresh:       rgba(59, 130, 246, 0.18);
+  --badge-relevant:    rgba(139, 92, 246, 0.18);
+  --badge-indepth:     rgba(245, 158, 11, 0.18);
+}
+
+/* ── Base ─────────────────────────────────────────────────────────────── */
+
+body {
+  background: var(--bg-gradient);
+  background-attachment: fixed;
+  color: var(--text-primary);
+  font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+  min-height: 100vh;
+}
+
+/* ── Glass card mixin ─────────────────────────────────────────────────── */
+
+.result,
+#sidebar,
+#answers,
+.infobox,
+nav#pagination {
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--glass-shadow);
+  transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease;
+}
+
+.result:hover {
+  background: var(--glass-bg-hover);
+  box-shadow: 0 12px 40px rgba(108, 99, 255, 0.18);
+  transform: translateY(-2px);
+}
+
+/* ── Search bar ───────────────────────────────────────────────────────── */
+
+#search_form,
+#search {
+  background: var(--surface);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--glass-shadow);
+  padding: 0.5rem 1rem;
+}
+
+#q {
+  background: transparent;
+  border: none;
+  color: var(--text-primary);
+  font-size: 1.05rem;
+  outline: none;
+  width: 100%;
+}
+
+#q::placeholder { color: var(--text-muted); }
+
+#search_submit,
+button[type="submit"] {
+  background: var(--accent);
+  border: none;
+  border-radius: var(--radius-sm);
+  color: var(--text-on-accent);
+  cursor: pointer;
+  font-weight: 600;
+  padding: 0.5rem 1.25rem;
+  transition: background 0.2s, box-shadow 0.2s;
+}
+
+#search_submit:hover,
+button[type="submit"]:hover {
+  background: var(--accent-light);
+  box-shadow: 0 0 16px var(--accent-glow);
+}
+
+/* ── Result cards ─────────────────────────────────────────────────────── */
+
+.result { padding: 1.1rem 1.3rem; margin-bottom: 0.85rem; }
+
+.result h3 a {
+  color: var(--accent);
+  font-size: 1.05rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.result h3 a:hover { text-decoration: underline; color: var(--accent-light); }
+
+.result .url_wrapper { color: var(--text-muted); font-size: 0.78rem; margin-bottom: 0.25rem; }
+
+.result .content { color: var(--text-secondary); font-size: 0.9rem; line-height: 1.6; }
+
+.result .highlight { background: rgba(108, 99, 255, 0.15); border-radius: 3px; padding: 0 2px; }
+
+/* ── Atomic ranking badges ────────────────────────────────────────────── */
+
+.atomic-badges { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: 0.5rem; }
+
+.atomic-badge {
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  padding: 0.2rem 0.65rem;
+  text-transform: uppercase;
+}
+
+.atomic-badge-trusted  { background: var(--badge-trusted);  color: #065f46; border: 1px solid rgba(16,185,129,0.3); }
+.atomic-badge-fresh    { background: var(--badge-fresh);    color: #1e40af; border: 1px solid rgba(59,130,246,0.3); }
+.atomic-badge-relevant { background: var(--badge-relevant); color: #5b21b6; border: 1px solid rgba(139,92,246,0.3); }
+.atomic-badge-indepth  { background: var(--badge-indepth);  color: #92400e; border: 1px solid rgba(245,158,11,0.3); }
+
+/* ── Content-type chip ────────────────────────────────────────────────── */
+
+.atomic-content-type {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 999px;
+  color: var(--text-muted);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  padding: 0.15rem 0.55rem;
+  text-transform: uppercase;
+}
+
+/* ── Reading time ─────────────────────────────────────────────────────── */
+
+.atomic-reading-time { color: var(--text-muted); font-size: 0.75rem; }
+
+/* ── Sidebar ──────────────────────────────────────────────────────────── */
+
+#sidebar { padding: 1rem; }
+
+.suggestion {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 999px;
+  color: var(--accent);
+  cursor: pointer;
+  font-size: 0.85rem;
+  padding: 0.3rem 0.85rem;
+  transition: background 0.15s;
+}
+
+.suggestion:hover { background: var(--glass-bg-hover); }
+
+/* ── Pagination ───────────────────────────────────────────────────────── */
+
+nav#pagination button,
+nav#pagination input[type="submit"] {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-sm);
+  color: var(--accent);
+  cursor: pointer;
+  font-weight: 600;
+  padding: 0.45rem 1rem;
+  transition: background 0.15s, box-shadow 0.15s;
+}
+
+nav#pagination button:hover,
+nav#pagination input[type="submit"]:hover {
+  background: var(--glass-bg-hover);
+  box-shadow: 0 0 12px var(--accent-glow);
+}
+
+nav#pagination .page_number_current {
+  background: var(--accent);
+  color: var(--text-on-accent);
+  border-color: var(--accent);
+}
+
+/* ── Focus ring (accessibility) ───────────────────────────────────────── */
+
+:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ── Screen-reader only ───────────────────────────────────────────────── */
+
+.sr-only {
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  height: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+
+/* ── Dark mode ────────────────────────────────────────────────────────── */
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-gradient:    linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+    --glass-bg:       rgba(255, 255, 255, 0.06);
+    --glass-bg-hover: rgba(255, 255, 255, 0.12);
+    --glass-border:   rgba(255, 255, 255, 0.12);
+    --text-primary:   #e8e8f0;
+    --text-secondary: #a8a8c0;
+    --text-muted:     #6868a0;
+    --surface:        rgba(255, 255, 255, 0.08);
+  }
+}
