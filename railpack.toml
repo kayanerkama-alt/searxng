@@ -1,0 +1,15 @@
+[providers]
+python = true
+go = false
+
+[options]
+pythonVersion = "3.11"
+
+[build]
+cmd = "pip install -r requirements.txt -r requirements-server.txt && pip install -e ."
+
+[start]
+cmd = "granian --interface wsgi --host 0.0.0.0 --port ${PORT:-8888} searx.webapp:app"
+
+[deploy]
+healthcheckPath = "/"
