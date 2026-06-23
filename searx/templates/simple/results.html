@@ -8,7 +8,7 @@
     {% endfor %}
 {%- endmacro %}
 {% block title %}{% if query_in_title %}{{- q|e }} - {% endif %}{% endblock %}
-{% block meta %}<link rel="alternate" type="application/rss+xml" title="Searx search: {{ q|e }}" href="{{ url_for('search', _external=True) }}?q={{ q|urlencode }}&amp;categories={{ selected_categories|join(",") | replace(' ','+') }}&amp;pageno={{ pageno }}&amp;time_range={{ time_range }}&amp;language={{ current_language }}&amp;safesearch={{ safesearch }}&amp;format=rss">{% endblock %}
+{% block meta %}<link rel="alternate" type="application/rss+xml" title="Atomic Search: {{ q|e }}" href="{{ url_for('search', _external=True) }}?q={{ q|urlencode }}&amp;categories={{ selected_categories|join(",") | replace(' ','+') }}&amp;pageno={{ pageno }}&amp;time_range={{ time_range }}&amp;language={{ current_language }}&amp;safesearch={{ safesearch }}&amp;format=rss">{% endblock %}
 {% block content %}
 {% include 'simple/search.html' %}
 
@@ -22,7 +22,7 @@
 
   {%- if answers -%}
     {%- include 'simple/elements/answers.html' -%}
-  {%- endif %}
+  {%- endif -%}
 
     <div id="sidebar">
 
@@ -59,7 +59,7 @@
     {%- endif -%}
 
     <div id="main_results" role="main">
-    {%- if results %}
+    {%- if results %}\
     <p class="sr-only" aria-live="polite" aria-atomic="true">
       {%- if results | count == 1 -%}
         {{ _('1 result found') }}
@@ -71,7 +71,18 @@
     {% for result in results %}
         {% if result.open_group and not only_template %}<div class="template_group_{{ result['template']|replace('.html', '') }}">{% endif %}
         {% set index = loop.index %}
-        {% include get_result_template('simple', result['template']) %}
+        {% set domain = result.url.split('/')[2] if result.url else 'unknown' %}
+        <div class="result" data-domain="{{ domain }}" data-index="{{ index }}" onclick="window.AtomicSearch.trackClick('{{ domain }}', {{ index }})">
+          {% include get_result_template('simple', result['template']) %}
+          <div class="result-actions">
+            <button class="result-action-btn" onclick="event.stopPropagation(); window.AtomicSearch.markSpam('{{ domain }}'); return false;">
+              🚫 Mark as Spam
+            </button>
+            <button class="result-action-btn" onclick="event.stopPropagation(); alert('Preferences saved for ' + '{{ domain }}'); return false;">
+              ⭐ Prefer This Site
+            </button>
+          </div>
+        </div>
         {% if result.close_group and not only_template %}</div>{% endif %}
     {% endfor %}
     {% if not results and not answers %}
@@ -152,3 +163,4 @@
     {% endif %}
 </div>
 {% endblock %}
+
