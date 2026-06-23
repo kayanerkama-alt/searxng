@@ -3,17 +3,14 @@
 
 from setuptools import setup, find_packages
 
-from searx.version import VERSION_TAG, GIT_URL
-from searx import get_setting
-
 with open('README.rst', encoding='utf-8') as f:
     long_description = f.read()
 
 with open('requirements.txt') as f:
-    requirements = [l.strip() for l in f.readlines()]
+    requirements = [l.strip() for l in f.readlines() if l.strip() and not l.startswith('#')]
 
 with open('requirements-dev.txt') as f:
-    dev_requirements = [l.strip() for l in f.readlines()]
+    dev_requirements = [l.strip() for l in f.readlines() if l.strip() and not l.startswith('#')]
 
 setup(
     name='searxng',
@@ -23,9 +20,9 @@ setup(
     author='SearXNG',
     author_email='contact@searxng.org',
     python_requires=">=3.10",
-    version=VERSION_TAG,
+    version="1.0.0",
     keywords='metasearch searchengine search web http',
-    url=get_setting('brand.docs_url'),
+    url="https://docs.searxng.org",
     classifiers=[
         "Development Status :: 5 - Production/Stable",
         "Topic :: Internet",
@@ -37,7 +34,7 @@ setup(
         "Programming Language :: Python :: 3.12",
         "Programming Language :: Python :: 3.13",
     ],
-    project_urls={"Code": GIT_URL, "Issue tracker": get_setting('brand.issue_url')},
+    project_urls={"Code": "https://github.com/searxng/searxng", "Issue tracker": "https://github.com/searxng/searxng/issues"},
     entry_points={
         'console_scripts': ['searxng-run = searx.webapp:run']
     },
@@ -67,3 +64,4 @@ setup(
     install_requires=requirements,
     extras_require={'test': dev_requirements},
 )
+
