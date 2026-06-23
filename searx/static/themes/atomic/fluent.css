@@ -1,0 +1,33 @@
+/* Atomic Search - Fluent Design Theme */
+:root {
+  --primary: #0078d4;
+  --secondary: #50e6ff;
+  --background: #ffffff;
+  --surface: #f3f3f3;
+  --text-primary: #323130;
+  --text-secondary: #605e5c;
+  --border: #e1dfdd;
+  --radius: 4px;
+  --shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+}
+
+@import url('./style.css');
+
+.result-item {
+  border: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.result-item:hover {
+  background: #ebebeb;
+}
+
+.search-input {
+  border: 1px solid var(--border);
+}
+
+.search-input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 1px var(--primary);
+}
+

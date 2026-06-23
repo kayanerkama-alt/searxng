@@ -1,0 +1,23 @@
+/* Atomic Search - Neumorphism Theme */
+:root {
+  --primary: #0066ff;
+  --background: #e0e5ec;
+  --surface: #e0e5ec;
+  --text-primary: #1a1a1a;
+  --text-secondary: #666666;
+  --border: transparent;
+  --radius: 20px;
+  --shadow: 9px 9px 16px #a3b1c6, -9px -9px 16px #ffffff;
+}
+
+@import url('./style.css');
+
+.result-item {
+  box-shadow: 9px 9px 16px #a3b1c6, -9px -9px 16px #ffffff;
+  border: none;
+}
+
+.result-item:hover {
+  box-shadow: inset 9px 9px 16px #a3b1c6, inset -9px -9px 16px #ffffff;
+}
+

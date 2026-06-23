@@ -1,0 +1,46 @@
+/* Atomic Search - Kagi-Inspired Theme */
+:root {
+  --primary: #ff6b35;
+  --primary-dark: #e55a2b;
+  --primary-light: #ff8555;
+  --secondary: #004e89;
+  --success: #1b998b;
+  --background: #ffffff;
+  --surface: #f8f9fa;
+  --text-primary: #1a1a1a;
+  --text-secondary: #666666;
+  --border: #e0e0e0;
+  --radius: 6px;
+}
+
+@import url('./style.css');
+
+.logo {
+  color: var(--primary);
+  font-weight: 700;
+}
+
+.search-button {
+  background: var(--primary);
+}
+
+.search-button:hover {
+  background: var(--primary-dark);
+}
+
+.result-title {
+  color: var(--secondary);
+}
+
+.result-item {
+  border-left: 3px solid var(--primary);
+}
+
+.result-item:hover {
+  border-left-color: var(--primary-dark);
+}
+
+.result-badge {
+  background: var(--primary);
+}
+

@@ -1,0 +1,17 @@
+/* Atomic Search - Catppuccin Latte Theme */
+:root {
+  --primary: #1e66f5;
+  --secondary: #179299;
+  --success: #40a02b;
+  --warning: #df8e1d;
+  --danger: #d20f39;
+  --background: #eff1f5;
+  --surface: #e6e9f0;
+  --text-primary: #4c4f69;
+  --text-secondary: #8c8fa1;
+  --border: #dce0e8;
+  --radius: 8px;
+}
+
+@import url('./style.css');
+

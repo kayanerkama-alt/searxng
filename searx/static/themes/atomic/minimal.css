@@ -1,0 +1,37 @@
+/* Atomic Search - Minimal Theme */
+:root {
+  --primary: #000000;
+  --background: #ffffff;
+  --surface: #f9f9f9;
+  --text-primary: #000000;
+  --text-secondary: #666666;
+  --border: #e0e0e0;
+  --shadow: none;
+  --radius: 0px;
+}
+
+@import url('./style.css');
+
+body {
+  font-family: Georgia, serif;
+}
+
+.result-item {
+  border: none;
+  border-bottom: 1px solid var(--border);
+  border-radius: 0;
+  padding: 1.5rem 0;
+  background: transparent;
+}
+
+.result-item:hover {
+  background: transparent;
+  box-shadow: none;
+  transform: none;
+}
+
+header {
+  box-shadow: none;
+  border-bottom: 1px solid var(--border);
+}
+

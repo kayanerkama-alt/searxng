@@ -1,0 +1,43 @@
+/* Atomic Search - Dracula Theme */
+:root {
+  --primary: #ff79c6;
+  --primary-dark: #ff5fa8;
+  --secondary: #8be9fd;
+  --success: #50fa7b;
+  --warning: #f1fa8c;
+  --danger: #ff5555;
+  --background: #282a36;
+  --surface: #44475a;
+  --surface-dark: #6272a4;
+  --text-primary: #f8f8f2;
+  --text-secondary: #f8f8f2;
+  --border: #6272a4;
+  --radius: 8px;
+}
+
+@import url('./style.css');
+
+body {
+  background-color: var(--background);
+  color: var(--text-primary);
+}
+
+.result-item {
+  background: var(--surface);
+  border-color: var(--border);
+}
+
+header {
+  background: var(--surface);
+  border-color: var(--border);
+}
+
+footer {
+  background: var(--surface);
+  border-color: var(--border);
+}
+
+.result-title {
+  color: var(--primary);
+}
+

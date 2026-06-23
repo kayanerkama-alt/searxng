@@ -1,0 +1,42 @@
+/* Atomic Search - Compact Theme */
+:root {
+  --primary: #0066ff;
+  --background: #ffffff;
+  --surface: #f5f7fa;
+  --text-primary: #1a1a1a;
+  --text-secondary: #666666;
+  --border: #d0d7e0;
+  --radius: 4px;
+}
+
+@import url('./style.css');
+
+body {
+  font-size: 0.9rem;
+}
+
+.result-item {
+  padding: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.result-title {
+  font-size: 1rem;
+  margin-bottom: 0.25rem;
+}
+
+.result-snippet {
+  font-size: 0.85rem;
+  margin-bottom: 0.5rem;
+}
+
+header {
+  padding: 0.5rem 1rem;
+}
+
+.search-input,
+.search-button {
+  padding: 0.5rem 0.75rem;
+  font-size: 0.9rem;
+}
+

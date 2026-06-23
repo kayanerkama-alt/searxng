@@ -1,0 +1,17 @@
+/* Atomic Search - Solarized Dark Theme */
+:root {
+  --primary: #268bd2;
+  --secondary: #2aa198;
+  --success: #859900;
+  --warning: #b58900;
+  --danger: #dc322f;
+  --background: #002b36;
+  --surface: #073642;
+  --text-primary: #839496;
+  --text-secondary: #93a1a1;
+  --border: #586e75;
+  --radius: 8px;
+}
+
+@import url('./style.css');
+

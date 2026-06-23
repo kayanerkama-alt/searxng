@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""Implementations needed for a branding of SearXNG."""
+"""Implementations needed for a branding of Atomic Search."""
 # pylint: disable=too-few-public-methods
 
 # Struct fields aren't discovered in Python 3.14
@@ -21,41 +21,41 @@ class BrandCustom(msgspec.Struct, kw_only=True, forbid_unknown_fields=True):
 class ThemeColors(msgspec.Struct, kw_only=True, forbid_unknown_fields=True):
     """Custom settings for theme colors in the brand section."""
 
-    theme_color_light: str = "#3050ff"
-    background_color_light: str = "#fff"
-    theme_color_dark: str = "#58f"
-    background_color_dark: str = "#222428"
-    theme_color_black: str = "#3050ff"
-    background_color_black: str = "#000"
+    theme_color_light: str = "#0066ff"
+    background_color_light: str = "#ffffff"
+    theme_color_dark: str = "#00d4ff"
+    background_color_dark: str = "#0a0e27"
+    theme_color_black: str = "#0066ff"
+    background_color_black: str = "#000000"
 
 
 class SettingsBrand(msgspec.Struct, kw_only=True, forbid_unknown_fields=True):
-    """Options for configuring brand properties.
+    """Options for configuring brand properties for Atomic Search.
 
     .. code:: yaml
 
        brand:
-         issue_url: https://github.com/searxng/searxng/issues
-         docs_url: https://docs.searxng.org
-         public_instances: https://searx.space
-         wiki_url: https://github.com/searxng/searxng/wiki
+         issue_url: https://github.com/kayanerkama-alt/searxng/issues
+         docs_url: https://atomic-search.dev/docs
+         public_instances: https://atomic-search.dev/instances
+         wiki_url: https://github.com/kayanerkama-alt/searxng/wiki
 
          custom:
            links:
-             Uptime: https://uptime.searxng.org/history/example-org
-             About: https://example.org/user/about.html
+             Privacy: https://atomic-search.dev/privacy
+             About: https://atomic-search.dev/about
     """
 
-    issue_url: str = "https://github.com/searxng/searxng/issues"
+    issue_url: str = "https://github.com/kayanerkama-alt/searxng/issues"
     """If you host your own issue tracker change this URL."""
 
-    docs_url: str = "https://docs.searxng.org"
+    docs_url: str = "https://atomic-search.dev/docs"
     """If you host your own documentation change this URL."""
 
-    public_instances: str = "https://searx.space"
-    """If you host your own https://searx.space change this URL."""
+    public_instances: str = "https://atomic-search.dev/instances"
+    """If you host your own instances page change this URL."""
 
-    wiki_url: str = "https://github.com/searxng/searxng/wiki"
+    wiki_url: str = "https://github.com/kayanerkama-alt/searxng/wiki"
     """Link to your wiki (or ``false``)"""
 
     custom: BrandCustom = msgspec.field(default_factory=BrandCustom)
@@ -68,11 +68,7 @@ class SettingsBrand(msgspec.Struct, kw_only=True, forbid_unknown_fields=True):
     pwa_colors: ThemeColors = msgspec.field(default_factory=ThemeColors)
     """Custom settings for PWA colors."""
 
-    # new_issue_url is a hackish solution tailored for only one hoster (GH).  As
-    # long as we don't have a more general solution, we should support it in the
-    # given function, but it should not be expanded further.
-
-    new_issue_url: str = "https://github.com/searxng/searxng/issues/new"
+    new_issue_url: str = "https://github.com/kayanerkama-alt/searxng/issues/new"
     """If you host your own issue tracker not on GitHub, then unset this URL.
 
     Note: This URL will create a pre-filled GitHub bug report form for an
@@ -80,3 +76,4 @@ class SettingsBrand(msgspec.Struct, kw_only=True, forbid_unknown_fields=True):
     engines), it will probably be replaced by another solution in the near
     future.
     """
+

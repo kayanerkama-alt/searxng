@@ -1,0 +1,17 @@
+/* Atomic Search - Monokai Theme */
+:root {
+  --primary: #66d9ef;
+  --secondary: #a1efe4;
+  --success: #a6e22e;
+  --warning: #e6db74;
+  --danger: #f92672;
+  --background: #272822;
+  --surface: #3e3d32;
+  --text-primary: #f8f8f2;
+  --text-secondary: #a6acaf;
+  --border: #49483e;
+  --radius: 8px;
+}
+
+@import url('./style.css');
+

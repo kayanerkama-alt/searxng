@@ -1,0 +1,25 @@
+/* Atomic Search - Glassmorphism Theme */
+:root {
+  --primary: #0066ff;
+  --background: #ffffff;
+  --surface: rgba(255, 255, 255, 0.7);
+  --text-primary: #1a1a1a;
+  --text-secondary: #666666;
+  --border: rgba(0, 0, 0, 0.1);
+  --radius: 16px;
+  --shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+@import url('./style.css');
+
+.result-item {
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.7);
+}
+
+header {
+  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.7);
+}
+

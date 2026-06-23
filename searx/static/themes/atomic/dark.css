@@ -1,0 +1,24 @@
+/* Atomic Search - Dark Theme */
+:root {
+  --primary: #00d4ff;
+  --primary-dark: #00a8cc;
+  --primary-light: #33e0ff;
+  --secondary: #0066ff;
+  --success: #00ff99;
+  --warning: #ffcc00;
+  --danger: #ff6666;
+  --background: #0a0e27;
+  --surface: #1a1f3a;
+  --surface-dark: #252d4a;
+  --text-primary: #ffffff;
+  --text-secondary: #b0b8c8;
+  --border: #3a4558;
+  --shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.4);
+  --radius: 8px;
+  --radius-lg: 12px;
+  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@import url('./style.css');
+

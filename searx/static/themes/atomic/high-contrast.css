@@ -1,0 +1,39 @@
+/* Atomic Search - High Contrast Theme */
+:root {
+  --primary: #000000;
+  --background: #ffffff;
+  --surface: #f0f0f0;
+  --text-primary: #000000;
+  --text-secondary: #000000;
+  --border: #000000;
+  --radius: 0px;
+  --shadow: none;
+}
+
+@import url('./style.css');
+
+* {
+  border-width: 2px !important;
+}
+
+.result-item {
+  border: 2px solid var(--border);
+  background: var(--background);
+}
+
+.result-title {
+  font-weight: 900;
+  font-size: 1.5rem;
+}
+
+.search-input,
+.search-button {
+  border: 2px solid var(--border);
+  font-weight: 600;
+}
+
+:focus-visible {
+  outline: 3px solid var(--primary);
+  outline-offset: 3px;
+}
+

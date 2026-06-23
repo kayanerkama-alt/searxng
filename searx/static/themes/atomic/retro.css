@@ -1,0 +1,35 @@
+/* Atomic Search - Retro Theme */
+:root {
+  --primary: #ff00ff;
+  --secondary: #00ffff;
+  --background: #000000;
+  --surface: #1a1a1a;
+  --text-primary: #00ff00;
+  --text-secondary: #ffff00;
+  --border: #00ff00;
+  --radius: 0px;
+  --shadow: none;
+}
+
+@import url('./style.css');
+
+body {
+  font-family: 'Courier New', monospace;
+  text-shadow: 0 0 10px var(--primary);
+}
+
+.result-item {
+  border: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.result-title {
+  color: var(--secondary);
+  text-shadow: 0 0 10px var(--secondary);
+}
+
+.search-button {
+  background: var(--primary);
+  color: var(--background);
+}
+

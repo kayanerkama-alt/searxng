@@ -1,0 +1,31 @@
+/* Atomic Search - Cyberpunk Theme */
+:root {
+  --primary: #ff006e;
+  --secondary: #00f5ff;
+  --background: #0a0e27;
+  --surface: #1a1f3a;
+  --text-primary: #00f5ff;
+  --text-secondary: #ff006e;
+  --border: #ff006e;
+  --radius: 0px;
+  --shadow: 0 0 20px rgba(255, 0, 110, 0.5);
+}
+
+@import url('./style.css');
+
+body {
+  font-family: 'Courier New', monospace;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.result-item {
+  border: 2px solid var(--primary);
+  box-shadow: 0 0 10px rgba(255, 0, 110, 0.3);
+}
+
+.result-title {
+  color: var(--secondary);
+  text-shadow: 0 0 10px rgba(0, 245, 255, 0.5);
+}
+

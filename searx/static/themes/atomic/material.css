@@ -1,0 +1,33 @@
+/* Atomic Search - Material Design Theme */
+:root {
+  --primary: #2196f3;
+  --primary-dark: #1976d2;
+  --secondary: #ff9800;
+  --success: #4caf50;
+  --warning: #ff9800;
+  --danger: #f44336;
+  --background: #fafafa;
+  --surface: #ffffff;
+  --text-primary: #212121;
+  --text-secondary: #757575;
+  --border: #e0e0e0;
+  --radius: 2px;
+  --shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+@import url('./style.css');
+
+.result-item {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.result-item:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.search-button {
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 500;
+}
+

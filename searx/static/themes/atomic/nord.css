@@ -1,0 +1,39 @@
+/* Atomic Search - Nord Theme */
+:root {
+  --primary: #88c0d0;
+  --primary-dark: #81a1c1;
+  --secondary: #5e81ac;
+  --success: #a3be8c;
+  --warning: #ebcb8b;
+  --danger: #bf616a;
+  --background: #2e3440;
+  --surface: #3b4252;
+  --surface-dark: #434c5e;
+  --text-primary: #eceff4;
+  --text-secondary: #d8dee9;
+  --border: #4c566a;
+  --radius: 8px;
+}
+
+@import url('./style.css');
+
+body {
+  background-color: var(--background);
+  color: var(--text-primary);
+}
+
+.result-item {
+  background: var(--surface);
+  border-color: var(--border);
+}
+
+header {
+  background: var(--surface);
+  border-color: var(--border);
+}
+
+footer {
+  background: var(--surface);
+  border-color: var(--border);
+}
+

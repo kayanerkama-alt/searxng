@@ -1,0 +1,36 @@
+/* Atomic Search - Minimal White Theme */
+:root {
+  --primary: #000000;
+  --background: #ffffff;
+  --surface: #ffffff;
+  --text-primary: #000000;
+  --text-secondary: #666666;
+  --border: #000000;
+  --radius: 0px;
+  --shadow: none;
+}
+
+@import url('./style.css');
+
+body {
+  font-family: 'Times New Roman', serif;
+  letter-spacing: 0.5px;
+}
+
+.result-item {
+  border: none;
+  border-top: 1px solid var(--border);
+  padding: 2rem 0;
+  background: transparent;
+}
+
+.result-item:first-child {
+  border-top: none;
+}
+
+header {
+  border: none;
+  border-bottom: 2px solid var(--border);
+  box-shadow: none;
+}
+

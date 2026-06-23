@@ -1,0 +1,17 @@
+/* Atomic Search - Gruvbox Light Theme */
+:root {
+  --primary: #458588;
+  --secondary: #689d6a;
+  --success: #98971a;
+  --warning: #d79921;
+  --danger: #cc241d;
+  --background: #fbf1c7;
+  --surface: #f3f1d9;
+  --text-primary: #3c3836;
+  --text-secondary: #7c6f64;
+  --border: #e8dcc1;
+  --radius: 8px;
+}
+
+@import url('./style.css');
+
