@@ -1,277 +1,684 @@
 <!DOCTYPE html>
-<html class="no-js theme-{{ preferences.get_value('simple_style') or 'auto' }} center-alignment-{{ preferences.get_value('center_alignment') and 'yes' or 'no' }}" lang="{{ locale_rfc5646 }}" {% if rtl %} dir="rtl"{% endif %}>
+<html class="no-js" lang="{{ locale_rfc5646 }}" {% if rtl %} dir="rtl"{% endif %}>
 <head>
   <meta charset="UTF-8">
   <meta name="endpoint" content="{{ endpoint }}">
-  <meta name="description" content="Atomic Search — Privacy-first metasearch with intelligent ranking">
-  <meta name="keywords" content="Atomic Search, search, metasearch, privacy, ranking">
+  <meta name="description" content="Atomic Search — Privacy-first metasearch with intelligent ranking, like Kagi but free">
+  <meta name="keywords" content="Atomic Search, metasearch, privacy, ranking, Kagi alternative">
   <meta name="generator" content="atomic-search/1.0">
   <meta name="referrer" content="no-referrer">
   <meta name="robots" content="noarchive">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
   <title>{% block title %}{% endblock %}Atomic Search</title>
-  <script type="module" src="{{ url_for('static', filename='sxng-core.min.js') }}" client_settings="{{ client_settings }}"></script>
-  <script>
-    // Atomic Search - User Preference Ranking System
-    (function() {
-      const PREF_KEY = 'atomic_site_prefs';
-      const SPAM_KEY = 'atomic_spam_domains';
-      
-      window.AtomicSearch = {
-        // Track user clicks for ranking
-        trackClick: function(domain, resultIndex) {
-          let prefs = JSON.parse(localStorage.getItem(PREF_KEY) || '{}');
-          if (!prefs[domain]) prefs[domain] = { clicks: 0, lastClick: null };
-          prefs[domain].clicks++;
-          prefs[domain].lastClick = Date.now();
-          localStorage.setItem(PREF_KEY, JSON.stringify(prefs));
-        },
-        
-        // Mark domain as spam
-        markSpam: function(domain) {
-          let spam = JSON.parse(localStorage.getItem(SPAM_KEY) || '[]');
-          if (!spam.includes(domain)) {
-            spam.push(domain);
-            localStorage.setItem(SPAM_KEY, JSON.stringify(spam));
-          }
-          document.querySelectorAll(`[data-domain="${domain}"]`).forEach(el => {
-            el.style.opacity = '0.3';
-            el.style.textDecoration = 'line-through';
-          });
-        },
-        
-        // Get ranking score for domain
-        getRankingScore: function(domain) {
-          let prefs = JSON.parse(localStorage.getItem(PREF_KEY) || '{}');
-          let spam = JSON.parse(localStorage.getItem(SPAM_KEY) || '[]');
-          
-          if (spam.includes(domain)) return -1000;
-          if (!prefs[domain]) return 0;
-          
-          let score = prefs[domain].clicks * 10;
-          let daysSinceClick = (Date.now() - prefs[domain].lastClick) / (1000 * 60 * 60 * 24);
-          score -= Math.max(0, daysSinceClick - 7) * 0.5; // Decay after 7 days
-          return score;
-        },
-        
-        // Rerank results based on user preferences
-        rerank: function() {
-          const resultsContainer = document.getElementById('main_results');
-          if (!resultsContainer) return;
-          
-          const results = Array.from(resultsContainer.querySelectorAll('[data-domain]'));
-          results.sort((a, b) => {
-            const scoreA = this.getRankingScore(a.dataset.domain);
-            const scoreB = this.getRankingScore(b.dataset.domain);
-            return scoreB - scoreA;
-          });
-          
-          results.forEach(result => resultsContainer.appendChild(result));
-        }
-      };
-      
-      // Initialize on page load
-      document.addEventListener('DOMContentLoaded', () => {
-        window.AtomicSearch.rerank();
-      });
-    })();
-  </script>
-  {% block meta %}{% endblock %}
-  {% if rtl %}
-  <link rel="stylesheet" href="{{ url_for('static', filename='sxng-rtl.min.css') }}" type="text/css" media="screen">
-  {% else %}
-  <link rel="stylesheet" href="{{ url_for('static', filename='sxng-ltr.min.css') }}" type="text/css" media="screen">
-  {% endif %}
+  
   <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
     :root {
-      --atomic-primary: #0066ff;
-      --atomic-secondary: #00d4ff;
-      --atomic-dark: #0a0e27;
-      --atomic-light: #f5f7fa;
-      --atomic-accent: #ff6b35;
+      --primary: #0066ff;
+      --primary-dark: #0052cc;
+      --secondary: #00d4ff;
+      --accent: #ff6b35;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --bg-dark: #0f1419;
+      --bg-darker: #0a0e17;
+      --bg-card: #1a1f2e;
+      --bg-hover: #252d3d;
+      --text-primary: #e5e7eb;
+      --text-secondary: #9ca3af;
+      --text-tertiary: #6b7280;
+      --border: #2d3748;
+      --border-light: #374151;
     }
-    
+
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
-      background: linear-gradient(135deg, var(--atomic-dark) 0%, #1a1f3a 100%);
-      color: #e0e0e0;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    }
-    
-    #main_search {
-      text-align: center;
-      padding: 60px 20px 40px;
-    }
-    
-    .search-container {
-      max-width: 700px;
-      margin: 0 auto;
-    }
-    
-    .atomic-logo {
-      font-size: 32px;
-      font-weight: 700;
-      background: linear-gradient(135deg, var(--atomic-primary), var(--atomic-secondary));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      margin-bottom: 30px;
-      letter-spacing: -1px;
-    }
-    
-    .search-input {
-      width: 100%;
-      padding: 16px 20px;
-      border: 2px solid var(--atomic-primary);
-      border-radius: 12px;
-      background: rgba(255, 255, 255, 0.05);
-      color: #fff;
-      font-size: 16px;
-      transition: all 0.3s ease;
-      backdrop-filter: blur(10px);
-    }
-    
-    .search-input:focus {
-      outline: none;
-      border-color: var(--atomic-secondary);
-      box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
-      background: rgba(255, 255, 255, 0.1);
-    }
-    
-    .search-button {
-      background: linear-gradient(135deg, var(--atomic-primary), var(--atomic-secondary));
-      color: white;
-      border: none;
-      padding: 12px 32px;
-      border-radius: 8px;
-      font-weight: 600;
-      cursor: pointer;
-      margin-top: 12px;
-      transition: all 0.3s ease;
-    }
-    
-    .search-button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 20px rgba(0, 102, 255, 0.4);
-    }
-    
-    #results {
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 20px;
-    }
-    
-    .result {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(0, 212, 255, 0.2);
-      border-radius: 12px;
-      padding: 20px;
-      margin-bottom: 16px;
-      transition: all 0.3s ease;
-      backdrop-filter: blur(10px);
-    }
-    
-    .result:hover {
-      border-color: var(--atomic-secondary);
-      background: rgba(0, 212, 255, 0.05);
-      transform: translateX(4px);
-    }
-    
-    .result-title {
-      color: var(--atomic-secondary);
-      font-size: 18px;
-      font-weight: 600;
-      margin-bottom: 8px;
-      text-decoration: none;
-    }
-    
-    .result-title:hover {
-      color: var(--atomic-primary);
-    }
-    
-    .result-url {
-      color: #888;
-      font-size: 13px;
-      margin-bottom: 8px;
-    }
-    
-    .result-snippet {
-      color: #b0b0b0;
+      background: linear-gradient(135deg, var(--bg-darker) 0%, #1a1f35 100%);
+      color: var(--text-primary);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
       line-height: 1.6;
-      font-size: 14px;
+      font-size: 15px;
+      overflow-x: hidden;
     }
-    
-    .result-actions {
-      margin-top: 12px;
-      display: flex;
-      gap: 12px;
-      font-size: 12px;
-    }
-    
-    .result-action-btn {
-      background: rgba(0, 102, 255, 0.2);
-      border: 1px solid var(--atomic-primary);
-      color: var(--atomic-primary);
-      padding: 6px 12px;
-      border-radius: 6px;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-    
-    .result-action-btn:hover {
-      background: var(--atomic-primary);
-      color: white;
-    }
-    
-    .spam-badge {
-      background: var(--atomic-accent);
-      color: white;
-      padding: 4px 8px;
-      border-radius: 4px;
-      font-size: 11px;
-      font-weight: 600;
-    }
-    
+
+    /* Header & Navigation */
     nav#links_on_top {
-      background: rgba(10, 14, 39, 0.8);
+      background: rgba(10, 14, 23, 0.8);
       backdrop-filter: blur(10px);
-      border-bottom: 1px solid rgba(0, 212, 255, 0.1);
+      border-bottom: 1px solid var(--border);
       padding: 12px 20px;
       display: flex;
-      gap: 20px;
+      gap: 24px;
       justify-content: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
     }
-    
+
     nav#links_on_top a {
-      color: #b0b0b0;
+      color: var(--text-secondary);
       text-decoration: none;
       display: flex;
       align-items: center;
       gap: 8px;
-      transition: color 0.3s ease;
+      font-size: 14px;
+      font-weight: 500;
+      transition: all 0.2s ease;
+      padding: 6px 12px;
+      border-radius: 6px;
     }
-    
+
     nav#links_on_top a:hover {
-      color: var(--atomic-secondary);
+      color: var(--secondary);
+      background: rgba(0, 212, 255, 0.1);
     }
-    
-    footer {
-      background: rgba(10, 14, 39, 0.9);
-      border-top: 1px solid rgba(0, 212, 255, 0.1);
-      padding: 30px 20px;
+
+    /* Main Container */
+    main {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Search Header */
+    #search_header {
+      padding: 40px 20px;
       text-align: center;
-      color: #888;
+      background: linear-gradient(180deg, rgba(0, 102, 255, 0.05) 0%, transparent 100%);
+    }
+
+    #search_logo {
+      display: inline-block;
+      font-size: 28px;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 24px;
+      letter-spacing: -0.5px;
+      text-decoration: none;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+
+    #search_logo:hover {
+      transform: scale(1.05);
+    }
+
+    #search_view {
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .search_box {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    #q {
+      flex: 1;
+      padding: 14px 18px;
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-primary);
+      font-size: 15px;
+      transition: all 0.2s ease;
+      backdrop-filter: blur(10px);
+    }
+
+    #q:focus {
+      outline: none;
+      border-color: var(--primary);
+      background: rgba(0, 102, 255, 0.1);
+      box-shadow: 0 0 0 3px rgba(0, 102, 255, 0.1);
+    }
+
+    #q::placeholder {
+      color: var(--text-tertiary);
+    }
+
+    #send_search {
+      padding: 12px 24px;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+    }
+
+    #send_search:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0, 102, 255, 0.3);
+    }
+
+    #send_search:active {
+      transform: translateY(0);
+    }
+
+    #clear_search {
+      background: transparent;
+      border: none;
+      color: var(--text-secondary);
+      cursor: pointer;
+      padding: 8px;
+      border-radius: 6px;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+    }
+
+    #clear_search:hover {
+      color: var(--text-primary);
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    /* Search Filters */
+    .search_filters {
+      max-width: 700px;
+      margin: 16px auto 0;
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+      padding: 0 20px;
+    }
+
+    .search_filters select {
+      padding: 8px 12px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--text-primary);
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .search_filters select:hover {
+      border-color: var(--primary);
+      background: rgba(0, 102, 255, 0.1);
+    }
+
+    /* Results Container */
+    #results {
+      flex: 1;
+      max-width: 900px;
+      margin: 0 auto;
+      width: 100%;
+      padding: 30px 20px;
+    }
+
+    #main_results {
+      display: grid;
+      gap: 16px;
+    }
+
+    /* Result Card */
+    .result {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      transition: all 0.2s ease;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .result::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      opacity: 0;
+      transition: opacity 0.2s ease;
+    }
+
+    .result:hover {
+      border-color: var(--primary);
+      background: var(--bg-hover);
+      transform: translateX(4px);
+      box-shadow: 0 8px 24px rgba(0, 102, 255, 0.15);
+    }
+
+    .result:hover::before {
+      opacity: 1;
+    }
+
+    .result-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .result-rank {
+      font-weight: 700;
+      color: var(--primary);
+      font-size: 18px;
+      min-width: 30px;
+      text-align: center;
+      padding-top: 2px;
+    }
+
+    .result-content {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .result-title {
+      color: var(--secondary);
+      font-size: 17px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      text-decoration: none;
+      display: block;
+      word-break: break-word;
+      transition: color 0.2s ease;
+    }
+
+    .result-title:hover {
+      color: var(--primary);
+    }
+
+    .result-url {
+      color: var(--text-tertiary);
+      font-size: 13px;
+      margin-bottom: 10px;
+      word-break: break-all;
+      font-family: 'Monaco', 'Courier New', monospace;
+    }
+
+    .result-snippet {
+      color: var(--text-secondary);
+      line-height: 1.6;
+      font-size: 14px;
+      margin-bottom: 12px;
+    }
+
+    .result-meta {
+      display: flex;
+      gap: 16px;
+      font-size: 12px;
+      color: var(--text-tertiary);
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+
+    .result-meta-item {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .result-score {
+      background: rgba(16, 185, 129, 0.2);
+      color: var(--success);
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-weight: 600;
+      font-size: 11px;
+    }
+
+    .result-score.high {
+      background: rgba(16, 185, 129, 0.2);
+      color: var(--success);
+    }
+
+    .result-score.medium {
+      background: rgba(245, 158, 11, 0.2);
+      color: var(--warning);
+    }
+
+    .result-score.low {
+      background: rgba(239, 68, 68, 0.2);
+      color: var(--danger);
+    }
+
+    .result-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .result-action-btn {
+      background: rgba(0, 102, 255, 0.15);
+      border: 1px solid var(--primary);
+      color: var(--primary);
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-size: 12px;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    .result-action-btn:hover {
+      background: var(--primary);
+      color: white;
+      transform: translateY(-1px);
+    }
+
+    .result-action-btn.spam {
+      border-color: var(--danger);
+      color: var(--danger);
+      background: rgba(239, 68, 68, 0.15);
+    }
+
+    .result-action-btn.spam:hover {
+      background: var(--danger);
+      color: white;
+    }
+
+    .result-action-btn.prefer {
+      border-color: var(--success);
+      color: var(--success);
+      background: rgba(16, 185, 129, 0.15);
+    }
+
+    .result-action-btn.prefer:hover {
+      background: var(--success);
+      color: white;
+    }
+
+    /* Spam Badge */
+    .spam-badge {
+      background: rgba(239, 68, 68, 0.2);
+      color: var(--danger);
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 600;
+      display: inline-block;
+    }
+
+    /* Pagination */
+    #pagination {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 40px;
+      flex-wrap: wrap;
+    }
+
+    .page_number, .previous_page, .next_page {
+      display: flex;
+      align-items: center;
+    }
+
+    .page_number input, .previous_page button, .next_page button {
+      padding: 8px 12px;
+      background: rgba(0, 102, 255, 0.15);
+      border: 1px solid var(--primary);
+      color: var(--primary);
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.2s ease;
       font-size: 13px;
     }
-    
-    footer a {
-      color: var(--atomic-secondary);
-      text-decoration: none;
+
+    .page_number input:hover, .previous_page button:hover, .next_page button:hover {
+      background: var(--primary);
+      color: white;
     }
-    
+
+    .page_number_current {
+      background: var(--primary) !important;
+      color: white !important;
+      cursor: default !important;
+    }
+
+    /* Footer */
+    footer {
+      background: rgba(10, 14, 23, 0.9);
+      border-top: 1px solid var(--border);
+      padding: 30px 20px;
+      text-align: center;
+      color: var(--text-tertiary);
+      font-size: 13px;
+      margin-top: auto;
+    }
+
+    footer a {
+      color: var(--secondary);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
     footer a:hover {
+      color: var(--primary);
       text-decoration: underline;
     }
+
+    /* Sidebar */
+    #sidebar {
+      display: none;
+    }
+
+    /* No Results */
+    .no-results {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--text-secondary);
+    }
+
+    .no-results h2 {
+      font-size: 24px;
+      margin-bottom: 12px;
+      color: var(--text-primary);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      #search_header {
+        padding: 30px 16px;
+      }
+
+      #search_logo {
+        font-size: 24px;
+      }
+
+      .search_box {
+        flex-direction: column;
+      }
+
+      #send_search {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .result {
+        padding: 16px;
+      }
+
+      .result-header {
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .result-rank {
+        font-size: 14px;
+      }
+
+      .result-title {
+        font-size: 15px;
+      }
+
+      .result-actions {
+        gap: 6px;
+      }
+
+      .result-action-btn {
+        padding: 5px 10px;
+        font-size: 11px;
+      }
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .result {
+      animation: fadeIn 0.3s ease forwards;
+    }
+
+    .result:nth-child(1) { animation-delay: 0.05s; }
+    .result:nth-child(2) { animation-delay: 0.1s; }
+    .result:nth-child(3) { animation-delay: 0.15s; }
+    .result:nth-child(4) { animation-delay: 0.2s; }
+    .result:nth-child(5) { animation-delay: 0.25s; }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--bg-darker);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--border-light);
+    }
   </style>
+
+  <script>
+    // Atomic Search - Ranking & Preference System
+    (function() {
+      const PREF_KEY = 'atomic_prefs';
+      const SPAM_KEY = 'atomic_spam';
+      
+      window.AtomicSearch = {
+        // Initialize preferences
+        init: function() {
+          this.loadPrefs();
+          this.loadSpam();
+        },
+
+        // Load user preferences
+        loadPrefs: function() {
+          try {
+            this.prefs = JSON.parse(localStorage.getItem(PREF_KEY) || '{}');
+          } catch {
+            this.prefs = {};
+          }
+        },
+
+        // Load spam list
+        loadSpam: function() {
+          try {
+            this.spam = JSON.parse(localStorage.getItem(SPAM_KEY) || '[]');
+          } catch {
+            this.spam = [];
+          }
+        },
+
+        // Save preferences
+        savePrefs: function() {
+          localStorage.setItem(PREF_KEY, JSON.stringify(this.prefs));
+        },
+
+        // Save spam list
+        saveSpam: function() {
+          localStorage.setItem(SPAM_KEY, JSON.stringify(this.spam));
+        },
+
+        // Track click
+        trackClick: function(domain) {
+          if (!this.prefs[domain]) {
+            this.prefs[domain] = { clicks: 0, lastClick: 0, score: 0 };
+          }
+          this.prefs[domain].clicks++;
+          this.prefs[domain].lastClick = Date.now();
+          this.prefs[domain].score = this.calculateScore(domain);
+          this.savePrefs();
+        },
+
+        // Mark as spam
+        markSpam: function(domain) {
+          if (!this.spam.includes(domain)) {
+            this.spam.push(domain);
+            this.saveSpam();
+          }
+          document.querySelectorAll(`[data-domain="${domain}"]`).forEach(el => {
+            el.style.opacity = '0.4';
+            el.style.textDecoration = 'line-through';
+          });
+        },
+
+        // Calculate ranking score
+        calculateScore: function(domain) {
+          if (this.spam.includes(domain)) return -1000;
+          
+          const pref = this.prefs[domain];
+          if (!pref) return 0;
+
+          let score = pref.clicks * 15;
+          const daysSince = (Date.now() - pref.lastClick) / (1000 * 60 * 60 * 24);
+          
+          // Time decay
+          if (daysSince > 7) {
+            score -= (daysSince - 7) * 2;
+          }
+          
+          return Math.max(0, score);
+        },
+
+        // Get ranking tier
+        getRankingTier: function(domain) {
+          const score = this.calculateScore(domain);
+          if (score >= 50) return 'high';
+          if (score >= 20) return 'medium';
+          return 'low';
+        }
+      };
+
+      // Initialize on load
+      document.addEventListener('DOMContentLoaded', () => {
+        window.AtomicSearch.init();
+      });
+    })();
+  </script>
+
+  {% block meta %}{% endblock %}
   {% block head %}
   <link title="Atomic Search" type="application/opensearchdescription+xml" rel="search" href="{{ opensearch_url }}">
   {% endblock %}
@@ -280,11 +687,11 @@
   <link rel="apple-touch-icon" href="{{ url_for('static', filename='img/favicon.png') }}">
   <link rel="manifest" href="{{ url_for('manifest') }}" />
 </head>
-<body class="{{ endpoint }}_endpoint" >
-  <main id="main_{{  self._TemplateReference__context.name|replace("simple/", "")|replace(".html", "") }}" class="{{body_class}}">
+<body>
+  <main id="main_{{ self._TemplateReference__context.name|replace("simple/", "")|replace(".html", "") }}" class="{{body_class}}">
     {% if errors %}
-        <div class="dialog-error" role="alert">
-            <a href="#" class="close" aria-label="close" title="close">×</a>
+        <div class="dialog-error" role="alert" style="background: rgba(239, 68, 68, 0.2); border: 1px solid var(--danger); color: var(--danger); padding: 16px; border-radius: 8px; margin: 16px;">
+            <a href="#" class="close" aria-label="close" title="close" style="color: inherit;">×</a>
             <ul>
             {% for message in errors %}
                 <li>{{ message }}</li>
@@ -294,46 +701,34 @@
     {% endif %}
 
     <nav id="links_on_top">
-      {%- from 'simple/icons.html' import icon_big -%}
       {%- block linkto_about -%}
-        <a href="{{ url_for('info', pagename='about') }}" class="link_on_top_about">{{ icon_big('information-circle') }}<span>{{ _('About') }}</span></a>
+        <a href="{{ url_for('info', pagename='about') }}" class="link_on_top_about">ℹ️ About</a>
       {%- endblock -%}
       {%- block linkto_donate -%}
         {%- if donation_url -%}
-        <a href="{{ donation_url }}" class="link_on_top_donate">{{ icon_big('heart') }}<span>{{ _('Donate') }}</span></a>
+        <a href="{{ donation_url }}" class="link_on_top_donate">❤️ Donate</a>
         {%- endif -%}
       {%- endblock -%}
       {%- block linkto_preferences -%}
-        {%- if request.args.get('preferences') -%}
-          <a href="{{ url_for('preferences') }}?preferences={{ request.args.get('preferences') }}&preferences_preview_only=true" class="link_on_top_preferences">{{ icon_big('settings') }}<span>{{ _('Preferences') }}</span></a>
-        {%- else -%}
-          <a href="{{ url_for('preferences') }}" class="link_on_top_preferences">{{ icon_big('settings') }}<span>{{ _('Preferences') }}</span></a>
-        {%- endif -%}
+        <a href="{{ url_for('preferences') }}" class="link_on_top_preferences">⚙️ Preferences</a>
       {%- endblock -%}
     </nav>
+
     {% block header %}
     {% endblock %}
     {% block content %}
     {% endblock %}
   </main>
+
   <footer>
     <p>
-    {{ _('Powered by') }} <a href="{{ url_for('info', pagename='about') }}">Atomic Search</a> — {{ _('Privacy-first metasearch with intelligent ranking') }}<br>
-        <a href="{{ searxng_git_url }}">{{ _('Source code') }}</a>
-        | <a href="{{ get_setting('brand.issue_url') }}">{{ _('Issue tracker') }}</a>
-        {% if enable_metrics %}| <a href="{{ url_for('stats') }}">{{ _('Engine stats') }}</a>{% endif %}
-        {% if get_setting('brand.public_instances') %}
-        | <a href="{{ get_setting('brand.public_instances') }}">{{ _('Public instances') }}</a>
-        {% endif %}
-        {% if get_setting('general.privacypolicy_url') %}
-        | <a href="{{ get_setting('general.privacypolicy_url') }}">{{ _('Privacy policy') }}</a>
-        {% endif %}
-        {% if get_setting('general.contact_url') %}
-        | <a href="{{ get_setting('general.contact_url') }}">{{ _('Contact instance maintainer') }}</a>
-        {% endif %}
-        {% for title, link in get_setting('brand.custom.links').items() %}
-        | <a href="{{ link }}">{{ _(title) }}</a>
-        {% endfor %}
+      <strong>⚛ Atomic Search</strong> — Privacy-first metasearch with intelligent ranking<br>
+      <a href="{{ url_for('info', pagename='about') }}">About</a> •
+      <a href="{{ searxng_git_url }}">Source Code</a> •
+      <a href="{{ get_setting('brand.issue_url') }}">Issues</a>
+      {% if get_setting('general.privacypolicy_url') %}
+      • <a href="{{ get_setting('general.privacypolicy_url') }}">Privacy</a>
+      {% endif %}
     </p>
   </footer>
 </body>
